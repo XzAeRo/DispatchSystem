@@ -1,12 +1,3 @@
-/*
-Main JS for tutorial: "Getting Started with HTML5 Local Databases"
-Written by Ben Lister (darkcrimson.com) revised 12 May 2010
-Tutorial: http://blog.darkcrimson.com/2010/05/local-databases/
-
-Licensed under the MIT License:
-http://www.opensource.org/licenses/mit-license.php
-*/
-	
 function initDatabase() {
 	try {
 	    if (!window.openDatabase) {
@@ -18,7 +9,6 @@ function initDatabase() {
 	        var maxSize = 100000; // in bytes
 	        db = openDatabase(shortName, version, displayName, maxSize);
 			createTables(db);
-			
 			return db;
 	    }
 	} catch(e) {
@@ -32,24 +22,18 @@ function initDatabase() {
 	} 
 }
 
-
-
-/***
-**** CREATE TABLE ** 
-***/
+/* Table create if not exists */
 function createTables(database){
 	database.transaction(
         function (transaction) {
         	transaction.executeSql('CREATE TABLE IF NOT EXISTS products(prod_cod TEXT NOT NULL PRIMARY KEY, name TEXT NOT NULL);', [], nullDataHandler, errorHandler);
-			transaction.executeSql('CREATE TABLE IF NOT EXISTS batch(batch_id TEXT NOT NULL PRIMARY KEY, prod_cod TEXT NOT NULL, initial_ammount FLOAT NOT NULL, current_ammount FLOAT NOT NULL, entry_date TEXT NOT NULL, last_update TEXT NOT NULL,FOREIGN KEY (prod_cod) REFERENCES products(prod_cod));', [], nullDataHandler, errorHandler);
-			transaction.executeSql('CREATE TABLE IF NOT EXISTS item(item_id TEXT NOT NULL PRIMARY KEY, prod_cod TEXT NOT NULL, batch_id TEXT NOT NULL, unitary_ammount INTEGER NOT NULL, unitary_size FLOAT NOT NULL, FOREIGN KEY (prod_cod) REFERENCES products(prod_cod),FOREIGN KEY (batch_id) REFERENCES batch (batch_id));', [], nullDataHandler, errorHandler);
+			transaction.executeSql('CREATE TABLE IF NOT EXISTS batch(batch_id TEXT NOT NULL PRIMARY KEY, prod_cod TEXT NOT NULL, initial_ammount FLOAT NOT NULL, current_ammount FLOAT NOT NULL, expiration_date TEXT NOT NULL, last_update TEXT NOT NULL,FOREIGN KEY (prod_cod) REFERENCES products(prod_cod));', [], nullDataHandler, errorHandler);
+			transaction.executeSql('CREATE TABLE IF NOT EXISTS item(item_id TEXT NOT NULL PRIMARY KEY, prod_cod TEXT NOT NULL, batch_id TEXT NOT NULL, ammount INTEGER NOT NULL, dosification FLOAT NOT NULL, last_updated TEXT NOT NULL, FOREIGN KEY (prod_cod) REFERENCES products(prod_cod),FOREIGN KEY (batch_id) REFERENCES batch (batch_id));', [], nullDataHandler, errorHandler);
         }
     );
 }
 
-/***
-**** INSERT INTO TABLE ** 
-***/
+/* Insert into tables */
 function insertProduct(database, data){
 	database.transaction(
 	    function (transaction) {		
@@ -74,83 +58,18 @@ function insertItem(database, data){
 	);	
 }
 
-/***
-**** UPDATE TABLE ** 
-***/
+/* Update tables */
 function updateSetting(database){
 	database.transaction(
 	    function (transaction) {
-	    	if($('#fname').val() != '') {
-	    		var fname = $('#fname').val();
-	    	} else {
-	    		var fname = 'none';
-	    	}
-			
-			var bg    = $('#bg_color').val();
-			var font  = $('#font_selection').val();
-			var car   = $('#fav_car').val();
-			
-	    	
+    	
 	    	transaction.executeSql("UPDATE page_settings SET fname=?, bgcolor=?, font=?, favcar=? WHERE id = 1", [fname, bg, font, car]);
 	    }
 	);	
-		selectAll();
-}
-function selectAll(database){ 
-	database.transaction(
-	    function (transaction) {
-
-	        transaction.executeSql("SELECT * FROM page_settings;", [], dataSelectHandler, errorHandler);
-	        
-	    }
-	);	
+		
 }
 
-function dataSelectHandler(transaction, results){
-
-	// Handle the results
-    for (var i=0; i<results.rows.length; i++) {
-        
-    	var row = results.rows.item(i);
-    	
-        var newFeature = new Object();
-    	
-    	newFeature.fname   = row['fname'];
-        newFeature.bgcolor = row['bgcolor'];
-        newFeature.font    = row['font'];
-        newFeature.favcar  = row['favcar'];
-        
-        $('body').css('background-color',newFeature.bgcolor);
-        $('body').css('font-family',newFeature.font);
-        $('#content').html('<h4 id="your_car">Your Favorite Car is a '+ newFeature.favcar +'</h4>');
-        
-        if(newFeature.fname != 'none') {
-       		$('#greeting').html('Howdy-ho, '+ newFeature.fname+'!');
-       		$('#fname').val(newFeature.fname);
-        } 
-        
-       $('select#font_selection').find('option[value='+newFeature.font+']').attr('selected','selected');
-       $('select#bg_color').find('option[value='+newFeature.bgcolor+']').attr('selected','selected');  
-       $('select#fav_car').find('option[value='+newFeature.favcar+']').attr('selected','selected');
-
-       
-    }
-
-}
-
-
-
-
-
-/***
-**** Save 'default' data into DB table **
-***/
-
-function saveAll(){
-		prePopulate(1);
-}
-
-
+/* Data and error handlers */
 function errorHandler(transaction, error){
  	if (error.code==1){
  		// DB Table already exists
@@ -166,28 +85,16 @@ function nullDataHandler(){
 	console.log("SQL Query Succeeded");
 }
 
-/***
-**** SELECT DATA **
-***/
-function selectAll(database){ 
-	database.transaction(
-	    function (transaction) {
-	        transaction.executeSql("SELECT * FROM page_settings;", [], dataSelectHandler, errorHandler);
-	    }
-	);	
-}
-
-/***
-**** DELETE DB TABLE ** 
-***/
+/* Drop all tables */
 function dropTables(database){
 	database.transaction(
 	    function (transaction) {
-	    	transaction.executeSql("DROP TABLE page_settings;", [], nullDataHandler, errorHandler);
+	    	transaction.executeSql("DROP TABLE products;", [], nullDataHandler, errorHandler);
+	    	transaction.executeSql("DROP TABLE batch;", [], nullDataHandler, errorHandler);
+	    	transaction.executeSql("DROP TABLE item;", [], nullDataHandler, errorHandler);
 	    }
 	);
-	console.log("Table 'page_settings' has been dropped.");
-	location.reload();
+	console.log("Tables has been dropped.");
 }
 
 	

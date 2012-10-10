@@ -2,10 +2,26 @@
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }
 
+function toAutocomplete(dbResult){
+	var arraySkeleton = ["id","searchable","labelhtml","sugestionhtml"];
+	var autocompleteArray = [];
+	for (var i=0; i<dbResult.rows.length; i++) {
+		var row = dbResult.rows.item(i);
+		arraySkeleton = [row["prod_cod"],row["name"],row["prod_cod"],row["name"] + " (" + row["prod_cod"] + ")"];
+		autocompleteArray.push(arraySkeleton);
+	}
+	return autocompleteArray;
+}
+
 $(document).ready(function(){
+	/* Initialize variables */
 	db = initDatabase();
-	var input_autocomplete = new $.TextboxList('#name', {unique: true, plugins: {autocomplete: {}}});
-	$(".textboxlist-bit-editable-input").attr("placeholder",$("#name").attr("placeholder"));
+	var input_autocomplete = new $.TextboxList('#prod_cod', {unique: true, plugins: {autocomplete: {}}});
+	$(".textboxlist-bit-editable-input").attr("placeholder",$("#prod_cod").attr("placeholder")); // ui tweak
+	/*
+	dropTables(db);
+	db = initDatabase();
+	*/
 	
 	oTable = $("#table").dataTable({
 		"bJQueryUI": true,
@@ -20,31 +36,40 @@ $(document).ready(function(){
         }
 	});
 	
+	/* Load autocomplete */
 	db.transaction(function(tx){
 		tx.executeSql('SELECT * FROM products', [], function (tx, results) {
-		  // Handle the results
-		  	var results_array = [];
-			for (var i=0; i<results.rows.length; i++) {
-				var row = results.rows.item(i);
-				oTable.fnAddData([row["prod_cod"],row["name"]]);
-				results_array.push(row);
-		  	}
-		  	input_autocomplete.plugins['autocomplete'].setValues([[31, 'caca', 'Bit html', 'Suggestion item html'],[32, 'pichi', 'Bit html', 'Suggestion item html 2']]);
+			data = toAutocomplete(results);
+			alert(data);
+		  	input_autocomplete.plugins['autocomplete'].setValues(data);
 		});
 	});
 	
+	/* Load table */
+	db.transaction(function(tx){
+		tx.executeSql('SELECT * FROM batch', [], function (tx, results) {
+			for (var i=0; i<results.rows.length; i++) {
+				var row = results.rows.item(i);
+				oTable.fnAddData([row["batch_id"],row["prod_cod"],row["initial_ammount"],row["current_ammount"],row["expiration_date"],row["last_update"]]);
+		  	}
+		});
+	});
+	
+	
 	$("#registerNew").click(function(){
+		var batch_id = $("#batch_id");
 		var prod_cod = $("#prod_cod");
-		var name = $("#name");
+		var name = $("#initial_ammount");
+		var
 		if(prod_cod != "" || name != ""){
 			data = [prod_cod.val(),name.val()];
-			insertProduct(db, data);
+			insertBatch(db, data);
 			oTable.fnAddData(data);
 			prod_cod.val("");
 			name.val("");
 			$("#RegisterUserForm label").inFieldLabels();
 		}
 		return false;
-	});
+	}); 
 		
 });
