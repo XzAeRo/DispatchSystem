@@ -1,0 +1,58 @@
+﻿ /* Add whatever you need to your CSS reset */
+html, body, h1, form, fieldset, input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  }
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	width: 800px;
+	margin: 0 auto;
+	background: #75890c; /* Old browsers */
+	background: -moz-linear-gradient(-45deg, #231e17 0%, #75890c 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#231e17), color-stop(100%,#75890c)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg, #231e17 0%,#75890c 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg, #231e17 0%,#75890c 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg, #231e17 0%,#75890c 100%); /* IE10+ */
+	background: linear-gradient(135deg, #231e17 0%,#75890c 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#231e17', endColorstr='#75890c',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	background-attachment: fixed;
+}
+#header {
+	height: 135px;
+	margin-top: 10px;
+}
+#header #logonr {
+	float: left;
+}
+#header #logosr {
+	float: right;
+}
+.tableBox {
+	color: #fff;
+	background: #2d2d2d;
+	background: -webkit-gradient(
+					linear,
+					left bottom,
+					left top,
+					color-stop(0, rgb(60,60,60)),
+					color-stop(0.74, rgb(43,43,43)),
+					color-stop(1, rgb(60,60,60))
+				);
+	background: -moz-linear-gradient(
+					center bottom,
+					rgb(60,60,60) 0%,
+					rgb(43,43,43) 74%,
+					rgb(60,60,60) 100%
+				);
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	margin: 20px auto;
+	padding: 20px;
+}
+
+.tableBox table td {
+	color: #000;
+}
