@@ -30,13 +30,13 @@
 .wrapperBox fieldset {
       padding: 20px;
       }
-input.text {
+input.text, .textboxlist input {
       -webkit-border-radius: 15px;
       -moz-border-radius: 15px;
       border-radius: 15px;
       border:solid 1px #444;
       font-size: 14px;
-      width: 90%;
+      width: 90% !important;
       padding: 7px 8px 7px 10px;
       -moz-box-shadow: 0px 1px 0px #777;
       -webkit-box-shadow: 0px 1px 0px #777;

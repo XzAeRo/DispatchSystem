@@ -4,6 +4,9 @@
 
 $(document).ready(function(){
 	db = initDatabase();
+	var input_autocomplete = new $.TextboxList('#name', {unique: true, plugins: {autocomplete: {}}});
+	$(".textboxlist-bit-editable-input").attr("placeholder",$("#name").attr("placeholder"));
+	
 	oTable = $("#table").dataTable({
 		"bJQueryUI": true,
         "sPaginationType": "full_numbers",
@@ -20,10 +23,13 @@ $(document).ready(function(){
 	db.transaction(function(tx){
 		tx.executeSql('SELECT * FROM products', [], function (tx, results) {
 		  // Handle the results
+		  	var results_array = [];
 			for (var i=0; i<results.rows.length; i++) {
 				var row = results.rows.item(i);
 				oTable.fnAddData([row["prod_cod"],row["name"]]);
-		  }
+				results_array.push(row);
+		  	}
+		  	input_autocomplete.plugins['autocomplete'].setValues([[31, 'caca', 'Bit html', 'Suggestion item html'],[32, 'pichi', 'Bit html', 'Suggestion item html 2']]);
 		});
 	});
 	
@@ -40,4 +46,5 @@ $(document).ready(function(){
 		}
 		return false;
 	});
+		
 });
