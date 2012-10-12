@@ -37,23 +37,23 @@ function createTables(database){
 function insertProduct(database, data){
 	database.transaction(
 	    function (transaction) {		
-		transaction.executeSql("INSERT INTO products(prod_cod, name) VALUES (?, ?)", [data[0], data[1]]);
+		transaction.executeSql("INSERT INTO products(prod_cod, name) VALUES (?, ?)", [data[0], data[1]], nullDataHandler, errorHandler);
 	    }
 	);	
 }
 
 function insertBatch(database, data){
 	database.transaction(
-	    function (transaction) {		
-		transaction.executeSql("INSERT INTO batch(batch_id, prod_cod, initial_amount, current_ammount, entry_date, last_update) VALUES (?, ?, ?, ?, ?, ?)", [data[0], data[1], data[2], data[3], data[4], data[5]]);
+	    function (transaction) {
+		transaction.executeSql("INSERT INTO batch(batch_id, prod_cod, initial_ammount, current_ammount, expiration_date, last_update) VALUES (?, ?, ?, ?, ?, ?)", [data[0], data[1], data[2], data[3], data[4], data[5]],nullDataHandler, errorHandler);
 	    }
 	);	
 }
 
 function insertItem(database, data){
 	database.transaction(
-	    function (transaction) {		
-		transaction.executeSql("INSERT INTO products(item_id, prod_cod, batch_id, unitary_ammount, unitary_size) VALUES (?, ?, ?, ?, ?)", [data[0], data[1], data[2], data[3], data[4]]);
+	    function (transaction) {
+		transaction.executeSql("INSERT INTO item(item_id, prod_cod, batch_id, ammount, dosification, last_updated) VALUES (?, ?, ?, ?, ?, ?)", [data[0], data[1], data[2], data[3], data[4], data[5]], nullDataHandler, errorHandler);
 	    }
 	);	
 }

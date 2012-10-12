@@ -1,47 +1,44 @@
-﻿function getURLParameter(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-}
-
-function toAutocomplete(dbResult){
-	var arraySkeleton = ["id","searchable","labelhtml","sugestionhtml"];
-	var autocompleteArray = [];
-	for (var i=0; i<dbResult.rows.length; i++) {
-		var row = dbResult.rows.item(i);
-		arraySkeleton = [row["prod_cod"],row["name"],row["prod_cod"],row["name"] + " (" + row["prod_cod"] + ")"];
-		autocompleteArray.push(arraySkeleton);
-	}
-	return autocompleteArray;
-}
-
-$(document).ready(function(){
+﻿$(document).ready(function(){
 	/* Initialize variables */
 	db = initDatabase();
-	var input_autocomplete = new $.TextboxList('#prod_cod', {unique: true, plugins: {autocomplete: {}}});
-	$(".textboxlist-bit-editable-input").attr("placeholder",$("#prod_cod").attr("placeholder")); // ui tweak
-	/*
-	dropTables(db);
-	db = initDatabase();
-	*/
-	
-	oTable = $("#table").dataTable({
-		"bJQueryUI": true,
-        "sPaginationType": "full_numbers",
-        "oLanguage": {
-            "sLengthMenu": "Mostrar _MENU_ resultados por página",
-            "sZeroRecords": "Nada encontrado - Añada información",
-            "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando de 0 a 0 de 0 registros",
-            "sInfoFiltered": "(Filtados _MAX_ registros en total)",
-			"sSearch": "Buscar:"
-        }
+	var valid_prod_cod = false;
+	var valid_initial_ammount = false;
+	var valid_expiration_date = false;
+	$("#batch_id").keyup(function(){$("#batch_id").val($("#batch_id").val().toUpperCase());});
+
+	/* Validation */
+	$("#prod_cod_label").blur(function(){
+		db.transaction(function(tx){
+			tx.executeSql('SELECT COUNT(*) FROM products WHERE prod_cod=?', [$("#prod_cod").val()], function (tx, results) {
+				var result = results.rows.item(0)["COUNT(*)"];
+				valid_prod_cod = (result == "1") ? true : false;
+			});
+		});
 	});
-	
+    	
 	/* Load autocomplete */
 	db.transaction(function(tx){
 		tx.executeSql('SELECT * FROM products', [], function (tx, results) {
-			data = toAutocomplete(results);
-			alert(data);
-		  	input_autocomplete.plugins['autocomplete'].setValues(data);
+			data = toAutocomplete(results,"products");
+		  	$( "#prod_cod_label" ).autocomplete({
+	            minLength: 0,
+	            source: data,
+	            focus: function( event, ui ) {
+	                $( "#prod_cod_label" ).val( ui.item.label );
+	                return false;
+	            },
+	            select: function( event, ui ) {
+	                $( "#prod_cod_label" ).val( ui.item.label );
+	                $( "#prod_cod" ).val( ui.item.value );
+	                $("#batch_id").val(ui.item.value + "-" + dateNow("auto") + "-");
+	                return false;
+	            }
+        	}).data( "autocomplete" )._renderItem = function( ul, item ) {
+            	return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.desc + "</a>" )
+                .appendTo( ul );
+        	};
 		});
 	});
 	
@@ -59,16 +56,24 @@ $(document).ready(function(){
 	$("#registerNew").click(function(){
 		var batch_id = $("#batch_id");
 		var prod_cod = $("#prod_cod");
-		var name = $("#initial_ammount");
-		var
-		if(prod_cod != "" || name != ""){
-			data = [prod_cod.val(),name.val()];
+		var prod_cod_label = $("#prod_cod_label");
+		var initial_ammount = $("#initial_ammount");
+		var expiration_date = $("#expiration_date");
+		data = [batch_id.val(),prod_cod.val(),initial_ammount.val(),initial_ammount.val(),expiration_date.val(),dateNow("db")];
+		if(batch_id.val().length != 0 && valid_prod_cod && initial_ammount.val().length != 0){
 			insertBatch(db, data);
 			oTable.fnAddData(data);
 			prod_cod.val("");
-			name.val("");
-			$("#RegisterUserForm label").inFieldLabels();
+			prod_cod_label.val("");
+			batch_id.val("");
+			initial_ammount.val("");
+			expiration_date.val("");
+			$( "#dialog-message-success" ).dialog( "open" );
 		}
+		else {
+			$( "#dialog-message-error" ).dialog( "open" );
+		}
+		
 		return false;
 	}); 
 		

@@ -2,17 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Natural Response - Añadir Producto</title>
+	<title>Producto - Natural Response</title>
 	<link rel="shortcut icon" href="http://www.naturalresponse.cl/NR/sites/all/themes/id-qwest/favicon.ico" type="image/x-icon" />
-	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-	<script type="text/javascript" src="js/infield.jquery.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/dataTables.jquery.min.js"></script>
 	<script type="text/javascript" src="js/database.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/products.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/form.css"/> 
 	<link rel="stylesheet" type="text/css" href="css/modern_table.css"/>
 	<link rel="stylesheet" type="text/css" href="css/jquery.dataTables_themeroller.css"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.4.custom.css"/>
+	<link rel="stylesheet" type="text/css" href="css/ui_table.css"/>
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css"/> 
 </head>
 
@@ -29,11 +31,11 @@
  <form id="RegisterUserForm" action="" method="get">
  	<fieldset>
          <p>
-            <input id="prod_cod" name="cod_prod" type="text" class="text" value="" autofocus="autofocus" placeholder="Código de Producto" />
+            <input id="prod_cod" name="cod_prod" type="text" class="text" value="" maxlength="8" autofocus="autofocus" placeholder="Código de Producto" title="Ingrese el código SAP del producto.<br /><small>8 Caracteres.</small>" />
          </p>
         
          <p>
-            <input id="name" name="name" type="text" class="text" value="" placeholder="Nombre de Producto" />
+            <input id="name" name="name" type="text" class="text" value="" placeholder="Nombre de Producto" title="Ingrese nombre descriptivo del producto.<br /><small>Ejemplo: Perlita Mx 600</small>" />
          </p>
          <p>
             <button id="registerNew" type="submit">Añadir</button>
@@ -60,6 +62,24 @@
 	</tfoot>
 </table>
 </div>
+<div id="dialog-message-error" title="Datos Incorrectos">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+        Existe un error con los datos ingresados. Por favor verifica que no hayas cometido un error.
+    </p>
+    <p>
+        <i>Recuerda seguir las instrucciones que aparecen en cada cuadro de texto.</i>
+    </p>
+</div>
 
+<div id="dialog-message-success" title="Datos Ingresados Correctamente">
+    <p>
+        <span class="ui-icon ui-icon-check" style="float: left; margin: 0 7px 50px 0;"></span>
+        Se han ingresado los datos correctamente.
+    </p>
+    <p>
+        <i>Presione ok para continuar...</i>
+    </p>
+</div>
 </body>
 </html>

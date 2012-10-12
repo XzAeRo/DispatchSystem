@@ -1,22 +1,16 @@
-﻿function getURLParameter(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
-}
-
-$(document).ready(function(){
+﻿$(document).ready(function(){
 	db = initDatabase();
-	oTable = $("#table").dataTable({
-		"bJQueryUI": true,
-        "sPaginationType": "full_numbers",
-        "oLanguage": {
-            "sLengthMenu": "Mostrar _MENU_ resultados por página",
-            "sZeroRecords": "Nada encontrado - Añada información",
-            "sInfo": "Mostrando de _START_ a _END_ de _TOTAL_ registros",
-            "sInfoEmpty": "Mostrando de 0 a 0 de 0 registros",
-            "sInfoFiltered": "(Filtados _MAX_ registros en total)",
-			"sSearch": "Buscar:"
-        }
-	});
-	
+
+	$("#name").keydown(function(){$("#name").val($("#name").val().capitalize());});
+	$("#prod_cod").keydown(function(){$("#prod_cod").val($("#prod_cod").val().toUpperCase());});
+	/*$("#prod_cod").blur(function(){
+		$("#prod_cod").removeClass("valid");$("#prod_cod").removeClass("invalid");
+		if(validateProductCode($("#prod_cod").val()))
+			$("#prod_cod").addClass("valid");
+		else
+			$("#prod_cod").addClass("invalid");
+	});*/
+
 	db.transaction(function(tx){
 		tx.executeSql('SELECT * FROM products', [], function (tx, results) {
 		  // Handle the results
@@ -30,13 +24,16 @@ $(document).ready(function(){
 	$("#registerNew").click(function(){
 		var prod_cod = $("#prod_cod");
 		var name = $("#name");
-		if(prod_cod != "" || name != ""){
+		if(prod_cod.val().length == 8 && name.val().length != 0){
 			data = [prod_cod.val(),name.val()];
 			insertProduct(db, data);
 			oTable.fnAddData(data);
 			prod_cod.val("");
 			name.val("");
-			$("#RegisterUserForm label").inFieldLabels();
+			$( "#dialog-message-success" ).dialog( "open" );
+		}
+		else {
+			$( "#dialog-message-error" ).dialog( "open" );
 		}
 		return false;
 	});

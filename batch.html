@@ -2,23 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Natural Response - Ingresar Lote</title>
+	<title>Lote - Natural Response</title>
 	<link rel="shortcut icon" href="http://www.naturalresponse.cl/NR/sites/all/themes/id-qwest/favicon.ico" type="image/x-icon" />
-	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-	<script type="text/javascript" src="js/infield.jquery.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/dataTables.jquery.min.js"></script>
 	<script type="text/javascript" src="js/database.js"></script>
-	<script type="text/javascript" src="js/GrowingInput.js"></script>
-	<script type="text/javascript" src="js/TextboxList.js"></script>		
-	<script type="text/javascript" src="js/TextboxList.Autocomplete.js"></script>
-	<script type="text/javascript" src="js/TextboxList.Autocomplete.Binary.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/batch.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/form.css"/> 
 	<link rel="stylesheet" type="text/css" href="css/modern_table.css"/>
 	<link rel="stylesheet" type="text/css" href="css/jquery.dataTables_themeroller.css"/>
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.4.custom.css"/>
-	<link rel="stylesheet" type="text/css" href="css/TextboxList.css"/> 
-	<link rel="stylesheet" type="text/css" href="css/TextboxList.Autocomplete.css"/>
+	<link rel="stylesheet" type="text/css" href="css/ui_table.css"/>
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css"/> 
 </head>
 
@@ -35,17 +31,17 @@
  <form id="RegisterUserForm" action="" method="get">
  	<fieldset>
  		<p>
-            <input id="batch_id" name="batch_id" type="text" class="text" value="" autofocus="autofocus" placeholder="Código de lote" />
-         </p
-         <p>
-            <input id="prod_cod" name="prod_cod" type="text" class="text" value="" autofocus="autofocus" placeholder="Nombre de Producto" />
+            <input id="prod_cod" name="prod_cod" type="hidden" class="text" value="" maxlength="8" placeholder="Nombre de Producto" />
+            <input id="prod_cod_label" name="prod_cod_label" type="text" class="text" value="" placeholder="Nombre de Producto" title="Seleccione un nombre de producto.<br />Ejemplo: ingrese la letra a, vea las opciones que aparecen y seleccione una." autofocus="autofocus" />
          </p>
-        
+ 		<p>
+            <input id="batch_id" name="batch_id" type="text" class="text" value="" placeholder="Código de lote" title="Ingrese el código de lote del producto" />
+         </p>        
          <p>
-            <input id="initial_ammount" name="initial_ammount" type="text" class="text" value="" placeholder="Cantidad (kilos/litros/unidades)" />
+            <input id="initial_ammount" name="initial_ammount" type="text" class="text" value="" placeholder="Cantidad (kilos/litros/unidades)" title="Ingrese la cantidad del producto.<br />Por ejemplo: si hay 100 kilogramos de bentonita, ingrese 100." />
          </p>
          <p>
-            <input id="expiration_date" name="expiration_date" type="text" class="text" value="" placeholder="Fecha de vencimiento (dejar en blanco si no tiene)" />
+            <input id="expiration_date" name="expiration_date" type="text" class="text" value="" placeholder="Fecha de vencimiento" title="Selecciones la fecha de vencimiento del calendario.<br />Si el producto no tiene expiración, deje este campo en blanco."/>
          </p>
          <p>
             <button id="registerNew" type="submit">Añadir</button>
@@ -79,6 +75,26 @@
 		</tr>
 	</tfoot>
 </table>
+</div>
+
+<div id="dialog-message-error" title="Datos Incorrectos">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+        Existe un error con los datos ingresados. Por favor verifica que no hayas cometido un error.
+    </p>
+    <p>
+        <i>Recuerda seguir las instrucciones que aparecen en cada cuadro de texto.</i>
+    </p>
+</div>
+
+<div id="dialog-message-success" title="Datos Ingresados Correctamente">
+    <p>
+        <span class="ui-icon ui-icon-check" style="float: left; margin: 0 7px 50px 0;"></span>
+        Se han ingresado los datos correctamente.
+    </p>
+    <p>
+        <i>Presione ok para continuar...</i>
+    </p>
 </div>
 
 </body>
