@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Dosificación - Natural Response</title>
+	<link rel="shortcut icon" href="http://www.naturalresponse.cl/NR/sites/all/themes/id-qwest/favicon.ico" type="image/x-icon" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.9.0/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/dataTables.jquery.min.js"></script>
+	<script type="text/javascript" src="js/database.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/item.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/form.css"/> 
+	<link rel="stylesheet" type="text/css" href="css/modern_table.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery.dataTables_themeroller.css"/>
+	<link rel="stylesheet" type="text/css" href="css/ui_table.css"/>
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css"/> 
+</head>
+
+<body>
+
+<div id="header">
+<img id="logonr" src="http://www.naturalresponse.cl/NR/sites/all/themes/id-qwest/images/logo.png" alt="" title="">
+<img id="logosr" src="http://www.subred.cl/templates/rt_reflex_j15/images/logo/style2/logo.png" alt="" title="">
+</div>
+
+<div class="wrapperBox">
+ <h2>Ingresar Dosificación</h2>
+
+ <form id="RegisterUserForm" action="" method="get">
+ 	<fieldset>
+ 		<p>
+            <input id="item_id" name="item_id" type="text" class="text" value="" maxlength="13" autofocus="autofocus" placeholder="Código de Dosificación" title="Ingrese el código de la dosificación.<br /><small>Recuerde que es el código de 8 dígitos impreso en las etiquetas.</small>" />
+         </p> 
+ 		<p>
+            <input id="prod_cod" name="prod_cod" type="hidden" class="text" value="" placeholder="Nombre de Producto" />
+            <input id="prod_cod_label" name="prod_cod_label" type="text" class="text" value="" placeholder="Nombre de Producto" title="Seleccione un nombre de producto.<br /><small>Ejemplo: ingrese la letra a, vea las opciones que aparecen y seleccione una.</small>" />
+         </p>
+ 		<p>
+            <input id="batch_id" name="batch_id" type="hidden" class="text" value="" placeholder="Código de Lote" title="Ingrese el código de lote del producto" />
+            <input id="batch_id_label" name="batch_id_label" type="text" class="text" value="" placeholder="Código de Lote" title="Ingrese el código de lote del producto.<br /><small>Ejemplo: ingrese la letra a, vea las opciones que aparecen y seleccione una.</small>" />
+         </p>        
+         <p id="inlineRow">
+            <input id="ammount" name="ammount" type="text" class="text" value="" placeholder="Cantidad" title="Ingrese la cantidad de dosificaciones disponibles.<br /><small>Por ejemplo: si hay <b>30 sacos de perlita</b> de 40 kilogramos c/u, ingrese <b>30</b>.</small>" style="width:75px !important;" /> X <input id="dosification" name="dosification" type="text" class="text" value="" placeholder="Dosificación" title="Ingrese la cantidad de la dosificación unitaria.<br /><small>Por ejemplo: si hay 30 sacos de perlita de <b>40 kilogramos c/u</b>, ingrese <b>40</b>.</small>" style="width:75px !important;"/> = <span id="totalAmmount" class="totalAmmount">0</span> <span class="totalAmmount">total</span>
+         </p>
+         <p>
+            <button id="registerNew" type="submit">Añadir</button>
+         </p>
+ 	</fieldset>
+ </form>
+</div>
+
+<div class="tableBox">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="table" width="100%">
+	<thead>
+		<tr>
+			<th>Código de Dosificación</th>
+			<th>Código de Producto</th>
+			<th>Código de Lote</th>
+			<th>Cantidad de Unidades</th>
+			<th>Dosificación</th>
+			<th>Total Disponible</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+	<tfoot>
+		<tr>
+			<th>Código de Dosificación</th>
+			<th>Código de Producto</th>
+			<th>Código de Lote</th>
+			<th>Cantidad de Unidades</th>
+			<th>Dosificación</th>
+			<th>Total Disponible</th>
+		</tr>
+	</tfoot>
+</table>
+</div>
+
+<div id="dialog-message-error" title="Datos Incorrectos">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+        Existe un error con los datos ingresados. Por favor verifica que no hayas cometido un error.
+    </p>
+    <p>
+        <i>Recuerda seguir las instrucciones que aparecen en cada cuadro de texto.</i>
+    </p>
+</div>
+
+<div id="dialog-message-success" title="Datos Ingresados Correctamente">
+    <p>
+        <span class="ui-icon ui-icon-check" style="float: left; margin: 0 7px 50px 0;"></span>
+        Se han ingresado los datos correctamente.
+    </p>
+    <p>
+        <i>Presione ok para continuar...</i>
+    </p>
+</body>
+</html>
